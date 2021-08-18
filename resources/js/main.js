@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import store from './store'
-import App from './layouts/App'
+import App from './App'
 import router from './routes'
 
 window._ = require('lodash')
