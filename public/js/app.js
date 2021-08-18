@@ -1962,24 +1962,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
 /* harmony import */ var _layouts_App__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layouts/App */ "./resources/js/layouts/App.vue");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
 
 
 
 
-
-vue__WEBPACK_IMPORTED_MODULE_3__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_4__.default);
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_4__.default({
-  routes: _routes__WEBPACK_IMPORTED_MODULE_2__.default,
-  mode: 'history'
-});
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var app = new vue__WEBPACK_IMPORTED_MODULE_3__.default({
   el: '#app',
-  router: router,
+  router: _routes__WEBPACK_IMPORTED_MODULE_2__.default,
   store: _store__WEBPACK_IMPORTED_MODULE_0__.default,
   render: function render(h) {
     return h(_layouts_App__WEBPACK_IMPORTED_MODULE_1__.default);
@@ -1999,18 +1992,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _views_Index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./views/Index */ "./resources/js/views/Index.vue");
-/* harmony import */ var _views_Show__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./views/Show */ "./resources/js/views/Show.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var _views_Index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./views/Index */ "./resources/js/views/Index.vue");
+/* harmony import */ var _views_Show__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./views/Show */ "./resources/js/views/Show.vue");
+
+
+vue__WEBPACK_IMPORTED_MODULE_0__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
 var routes = [{
   path: '/',
-  component: _views_Index__WEBPACK_IMPORTED_MODULE_0__.default
+  component: _views_Index__WEBPACK_IMPORTED_MODULE_2__.default
 }, {
   path: '/show',
-  component: _views_Show__WEBPACK_IMPORTED_MODULE_1__.default
+  component: _views_Show__WEBPACK_IMPORTED_MODULE_3__.default
 }];
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (routes);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vue_router__WEBPACK_IMPORTED_MODULE_1__.default({
+  routes: routes,
+  mode: 'history'
+}));
 
 /***/ }),
 
