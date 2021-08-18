@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import store from './store'
-import App from './App'
 import router from './routes'
+import App from './App'
 
 window._ = require('lodash')
 window.axios = require('axios')

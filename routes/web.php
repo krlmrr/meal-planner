@@ -2,4 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/{any}', [App\Http\Controllers\HomeController::class, 'index'])->where('any', '.*');
+Route::get('/{any}', [App\Http\Controllers\AppController::class, 'index'])->where('any', '.*');
