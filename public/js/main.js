@@ -19972,7 +19972,7 @@ var render = function() {
             expression: "formData.email"
           }
         ],
-        staticClass: "mt-4 mx-4 border",
+        staticClass: "mt-4 mx-4 border px-2",
         attrs: {
           type: "text",
           name: "email",
