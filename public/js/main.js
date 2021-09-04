@@ -1882,8 +1882,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'Navbar'
+  name: 'Navbar',
+  methods: {
+    logOut: function logOut() {
+      var _this = this;
+
+      axios.post('/api/logout').then(function (response) {
+        _this.$router.push('/');
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -1907,6 +1917,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'login',
   data: function data() {
@@ -1914,17 +1925,30 @@ __webpack_require__.r(__webpack_exports__);
       formData: {
         'email': '',
         'password': ''
-      }
+      },
+      user: ''
     };
+  },
+  created: function created() {
+    this.getLoggedInUser();
   },
   methods: {
     login: function login() {
       var _this = this;
 
       axios.get('/sanctum/csrf-cookie').then(function (response) {
-        axios.post('/login', _this.formData).then(function (response) {
-          console.log(response);
+        axios.post('/api/login', _this.formData).then(function (response) {
+          _this.getLoggedInUser();
         });
+      });
+    },
+    getLoggedInUser: function getLoggedInUser() {
+      var _this2 = this;
+
+      axios.get('/api/user').then(function (response) {
+        _this2.user = response.data.name;
+        _this2.formData.email = '';
+        _this2.formData.password = '';
       });
     }
   }
@@ -19923,7 +19947,19 @@ var render = function() {
     [
       _c("router-link", { attrs: { to: "/" } }, [_vm._v("Home")]),
       _vm._v(" "),
-      _c("router-link", { attrs: { to: "/show" } }, [_vm._v("Show")])
+      _c("router-link", { attrs: { to: "/show" } }, [_vm._v("Show")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          on: {
+            click: function($event) {
+              return _vm.logOut()
+            }
+          }
+        },
+        [_vm._v("logout")]
+      )
     ],
     1
   )
@@ -19963,6 +19999,10 @@ var render = function() {
       }
     },
     [
+      _vm.user !== ""
+        ? _c("p", [_vm._v("Hello " + _vm._s(_vm.user))])
+        : _vm._e(),
+      _vm._v(" "),
       _c("input", {
         directives: [
           {
@@ -19999,7 +20039,7 @@ var render = function() {
             expression: "formData.password"
           }
         ],
-        staticClass: "mt-4 mx-4 border",
+        staticClass: "mt-4 mx-4 border px-2",
         attrs: {
           type: "password",
           name: "password",
