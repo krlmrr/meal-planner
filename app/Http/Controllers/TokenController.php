@@ -10,6 +10,18 @@ use Illuminate\Validation\ValidationException;
 
 class TokenController extends Controller
 {
+    public function index()
+    {
+        $tokens = Auth::user()->tokens()->get();
+        if(count($tokens) > 0) {
+            return response($tokens, 200);
+        } 
+        
+        return response([
+            'message' => 'No Tokens Found'
+        ]);    
+    }
+
     public function create(Request $request)
     {
         $request->validate([

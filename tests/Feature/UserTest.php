@@ -10,10 +10,7 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     * @return void
-     */
+    /** @test */
     public function user_can_register()
     {
         $response = $this->json('POST', '/api/register', [
@@ -27,10 +24,7 @@ class UserTest extends TestCase
     }
 
 
-    /**
-     * @test
-     * @return void
-     */
+    /** @test */
     public function a_user_can_log_in()
     {
         $user = User::factory()->create();
@@ -43,10 +37,7 @@ class UserTest extends TestCase
         $response->assertStatus(204);
     }
 
-    /**
-     * @test
-     * @return void
-     */
+    /** @test */
     public function user_can_see_their_info()
     {
         $user = User::factory()->make();
@@ -58,6 +49,5 @@ class UserTest extends TestCase
             'name' => $user['name'],
             'email' => $user['email']
         ]);
-    }
-    
+    }  
 }
