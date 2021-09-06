@@ -7,9 +7,8 @@ use App\Http\Controllers\TokenController;
 
 Auth::routes();
 
-Route::post('/token', [TokenController::class,'create']);
-
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/token', [TokenController::class,'create']);
     Route::post('/token/revoke', [TokenController::class, 'destroy']);
     Route::get('/tokens', [TokenController::class, 'index']);
     Route::get('/user', function (Request $request) {

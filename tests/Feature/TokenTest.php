@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,11 +13,11 @@ class TokenTest extends TestCase
 
     protected function setUp() : void {
         parent::setUp();
-        $this->user = User::factory()->create();
+        $this->user = Sanctum::actingAs( User::factory()->create() );
     }
 
     /** @test */
-    public function a_user_can_create_a_token()
+    public function a_user_can_create_a_token_using_the_route()
     {
         $response = $this->actingAs($this->user)->json('POST', '/api/token', [
             'email' => $this->user['email'],
@@ -36,34 +37,15 @@ class TokenTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_destroy_their_token()
-    {
-        $token = $this->actingAs($this->user)->json('POST', '/api/token', [
-            'email' => $this->user['email'],
-            'password' => 'password',
-            'device_name' => 'test_device'
-        ]);
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token['token'],
-            'Accept' => 'application/json'
-        ])->json('POST', '/api/token/revoke', [
-            'id' => $token['id']
-        ]);
-
-        $response->assertStatus(204);
-    }
-
-    /** @test */
     public function a_user_can_view_their_hashed_tokens()
     {
-        $token1 = $this->actingAs($this->user)->json('POST', '/api/token', [
+        $token1 = $this->json('POST', '/api/token', [
             'email' => $this->user['email'],
             'password' => 'password',
             'device_name' => 'test_device'
         ]);
 
-        $token2 = $this->actingAs($this->user)->json('POST', '/api/token', [
+        $token2 = $this->json('POST', '/api/token', [
             'email' => $this->user['email'],
             'password' => 'password',
             'device_name' => 'test_device_2'
@@ -76,6 +58,29 @@ class TokenTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonCount(2);
+        $response->assertJsonFragment([
+            'id' => $token1['id'],
+            'name' => 'test_device_2'
+        ]);
+    }
+
+    /** @test */
+    public function a_user_can_destroy_their_token()
+    {
+        $token = $this->user->createToken('Token Name')->accessToken;
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token['token'],
+            'Accept' => 'application/json'
+        ])->json('POST', '/api/token/revoke', [
+            'id' => $token['id']
+        ]);
+
+        $response->assertJson([
+            'message' => "Token Revoked"
+        ]);
+
+        $response->assertStatus(200);
     }
 
     /** @test */
@@ -87,6 +92,6 @@ class TokenTest extends TestCase
             'message' => "No Tokens Found"
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(404);
     }
 }
