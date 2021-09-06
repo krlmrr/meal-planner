@@ -10,12 +10,16 @@ class TokenTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp() : void {
+        parent::setUp();
+        $this->user = User::factory()->create();
+    }
+
     /** @test */
     public function a_user_can_create_a_token()
     {
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->json('POST', '/api/token', [
-            'email' => $user['email'],
+        $response = $this->actingAs($this->user)->json('POST', '/api/token', [
+            'email' => $this->user['email'],
             'password' => 'password',
             'device_name' => 'test_device'
         ]);
@@ -34,10 +38,8 @@ class TokenTest extends TestCase
     /** @test */
     public function a_user_can_destroy_their_token()
     {
-        $user = User::factory()->create();
-
-        $token = $this->actingAs($user)->json('POST', '/api/token', [
-            'email' => $user['email'],
+        $token = $this->actingAs($this->user)->json('POST', '/api/token', [
+            'email' => $this->user['email'],
             'password' => 'password',
             'device_name' => 'test_device'
         ]);
@@ -55,16 +57,14 @@ class TokenTest extends TestCase
     /** @test */
     public function a_user_can_view_their_hashed_tokens()
     {
-        $user = User::factory()->create();
-
-        $token1 = $this->actingAs($user)->json('POST', '/api/token', [
-            'email' => $user['email'],
+        $token1 = $this->actingAs($this->user)->json('POST', '/api/token', [
+            'email' => $this->user['email'],
             'password' => 'password',
             'device_name' => 'test_device'
         ]);
 
-        $token2 = $this->actingAs($user)->json('POST', '/api/token', [
-            'email' => $user['email'],
+        $token2 = $this->actingAs($this->user)->json('POST', '/api/token', [
+            'email' => $this->user['email'],
             'password' => 'password',
             'device_name' => 'test_device_2'
         ]);
@@ -81,9 +81,7 @@ class TokenTest extends TestCase
     /** @test */
     public function a_user_gets_unathenticated_if_they_dont_have_a_token()
     {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->json('GET', '/api/tokens');
+        $response = $this->actingAs($this->user)->json('GET', '/api/tokens');
 
         $response->assertJson([
             'message' => "No Tokens Found"
